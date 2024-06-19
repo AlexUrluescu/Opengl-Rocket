@@ -102,52 +102,12 @@ void CALLBACK RotesteJos() {
     rocketAngleX += 5;
 }
 
-void drawCube(float size) {
-    float halfSize = size / 2.0f;
-
-    glBegin(GL_QUADS);
-    // Front face
-    glNormal3f(0.0, 0.0, 1.0);
-    glVertex3f(-halfSize, -halfSize, halfSize);
-    glVertex3f(halfSize, -halfSize, halfSize);
-    glVertex3f(halfSize, halfSize, halfSize);
-    glVertex3f(-halfSize, halfSize, halfSize);
-
-    // Back face
-    glNormal3f(0.0, 0.0, -1.0);
-    glVertex3f(-halfSize, -halfSize, -halfSize);
-    glVertex3f(-halfSize, halfSize, -halfSize);
-    glVertex3f(halfSize, halfSize, -halfSize);
-    glVertex3f(halfSize, -halfSize, -halfSize);
-
-    // Top face
-    glNormal3f(0.0, 1.0, 0.0);
-    glVertex3f(-halfSize, halfSize, -halfSize);
-    glVertex3f(-halfSize, halfSize, halfSize);
-    glVertex3f(halfSize, halfSize, halfSize);
-    glVertex3f(halfSize, halfSize, -halfSize);
-
-    // Bottom face
-    glNormal3f(0.0, -1.0, 0.0);
-    glVertex3f(-halfSize, -halfSize, -halfSize);
-    glVertex3f(halfSize, -halfSize, -halfSize);
-    glVertex3f(halfSize, -halfSize, halfSize);
-    glVertex3f(-halfSize, -halfSize, halfSize);
-
-    // Right face
-    glNormal3f(1.0, 0.0, 0.0);
-    glVertex3f(halfSize, -halfSize, -halfSize);
-    glVertex3f(halfSize, halfSize, -halfSize);
-    glVertex3f(halfSize, halfSize, halfSize);
-    glVertex3f(halfSize, -halfSize, halfSize);
-
-    // Left face
-    glNormal3f(-1.0, 0.0, 0.0);
-    glVertex3f(-halfSize, -halfSize, -halfSize);
-    glVertex3f(-halfSize, -halfSize, halfSize);
-    glVertex3f(-halfSize, halfSize, halfSize);
-    glVertex3f(-halfSize, halfSize, -halfSize);
-    glEnd();
+void drawCylinder(float radius, float height) {
+    glEnable(GL_TEXTURE_2D);
+    gluQuadricTexture(quadric, GL_TRUE);
+    glBindTexture(GL_TEXTURE_2D, textureId1);
+    gluQuadricOrientation(quadric, GLU_OUTSIDE);
+    gluCylinder(quadric, radius, radius, height, 20, 20);
 }
 
 void CALLBACK display() {
@@ -160,55 +120,55 @@ void CALLBACK display() {
     glRotatef(rocketAngleX, 1, 0, 0);
     glRotatef(rocketAngleZ, 0, 0, 1);
 
-    // Desenam corpul rachetei (paralelipiped) cu rotația în jurul propriei axe
+    // Desenăm corpul rachetei (cilindru) cu rotația în jurul propriei axe
     glPushMatrix();
     glColor3f(0.8, 0.0, 0.0); // culoarea rosu
     glRotatef(bodyAngleY, 0, 1, 0); // rotația corpului în jurul axei Y
-    glTranslatef(0.0, 0.0, 0.0);
+    glTranslatef(0.0, -50.0, 0.0);
     glScalef(1.7, 5.0, 1.7); // ajustare dimensiuni pentru corp
-    drawCube(20.0);
+    glRotatef(-90, 1, 0, 0); // rotație pentru a orienta cilindrul vertical
+    drawCylinder(10.0, 20.0); // dimensiunile cilindru
     glPopMatrix();
 
-    // Desenam varful rachetei (con) lipit de corp
+    // Desenăm varful rachetei (con) lipit de corp
     glPushMatrix();
     glColor3f(0.0, 0.0, 1.0); // culoarea alb
     glTranslatef(0.0, 50.0, 0.0); // pozitionare in partea superioara a corpului
     glEnable(GL_TEXTURE_2D);
-    gluQuadricTexture(quadric, GL_TRUE);
     glBindTexture(GL_TEXTURE_2D, textureId1);
     glRotatef(-90, 1.0, 0.0, 0.0); // rotesc conul pentru a avea varful in sus
     glutSolidCone(30.0, 60.0, 20, 20);
     glPopMatrix();
 
-    // Desenam aripioarele rachetei
+    // Desenăm aripioarele rachetei folosind cuburi
     glColor3f(0.0, 1.0, 0.0); // culoarea verde
 
     // Aripioara 1
     glPushMatrix();
     glTranslated(20.0, -50.0, 0);
     glScaled(3, 0.1, 1.8);
-    drawCube(20.0);
+    glutSolidCube(20.0);
     glPopMatrix();
 
     // Aripioara 2
     glPushMatrix();
     glTranslated(-20.0, -50.0, 0);
     glScaled(3, 0.1, 1.8);
-    drawCube(20.0);
+    glutSolidCube(20.0);
     glPopMatrix();
 
     // Aripioara 3
     glPushMatrix();
     glTranslated(0, -50.0, 20.0);
     glScaled(2, 0.1, 2.8);
-    drawCube(20.0);
+    glutSolidCube(20.0);
     glPopMatrix();
 
     // Aripioara 4
     glPushMatrix();
     glTranslated(0, -50.0, -20.0);
     glScaled(2, 0.1, 2.8);
-    drawCube(20.0);
+    glutSolidCube(20.0);
     glPopMatrix();
 
     glPopMatrix(); // Termină transformările pentru întreaga rachetă
