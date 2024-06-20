@@ -103,6 +103,14 @@ void drawCylinder(float radius, float height) {
     gluCylinder(quadric, radius, radius, height, 20, 20);
 }
 
+void drawString(const char* str, int x, int y) {
+    glRasterPos2i(x, y);
+
+    for (const char* c = str; *c != '\0'; c++) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+    }
+}
+
 void CALLBACK display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
@@ -164,9 +172,22 @@ void CALLBACK display() {
     glutSolidCube(20.0);
     glPopMatrix();
 
+    glPushMatrix();
+    glTranslatef(50.0, 50.0, 0.0); // Ajustăm poziția textului
+
+    glColor3f(0.0, 0.0, 0.0); // culoare neagră pentru text
+    drawString("Urluescu Alexandre Joao", 0, 0);
+
+    glPopMatrix();
+
+
+    glFlush();
+
     glPopMatrix();
 
     glFlush();
+
+
 }
 
 void CALLBACK myReshape(GLsizei w, GLsizei h) {
