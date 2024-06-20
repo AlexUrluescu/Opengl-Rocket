@@ -3,8 +3,6 @@
 #include "glaux.h"
 #include <cmath>
 #include "GLU.H"
-
-// Necesita includerea glut.h pentru a folosi glutSolidTorus
 #ifdef _WIN32
 #include "glut.h"
 #else
@@ -44,14 +42,11 @@ GLuint incarcaTextura(const char* s)
 }
 
 void myInit() {
-    glClearColor(1.0, 1.0, 1.0, 1.0); // Schimbă fundalul la alb
+    glClearColor(1.0, 1.0, 1.0, 1.0);
     glEnable(GL_DEPTH_TEST);
-
-    // Activare iluminare
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 
-    // Configurare sursă de lumină
     GLfloat light_position[] = { 0.0, 200.0, 400.0, 1.0 };
     GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
     GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -62,15 +57,13 @@ void myInit() {
     glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
     glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
 
-    // Configurare umbre
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_NORMALIZE); // Normalizare normalelor pentru calculul umbrelor
-    glEnable(GL_COLOR_MATERIAL); // Utilizare culori pentru materiale
-    glEnable(GL_BLEND); // Activare amestec pentru umbre mai naturale
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // Funcție de amestec pentru umbre
-    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE); // Folosește culorile pentru ambient și difuz
+    glEnable(GL_NORMALIZE); 
+    glEnable(GL_COLOR_MATERIAL); 
+    glEnable(GL_BLEND); 
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 
-    // Configurare materiale pentru obiecte
     GLfloat material_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
     GLfloat material_diffuse[] = { 0.8, 0.8, 0.8, 1.0 };
     GLfloat material_specular[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -113,35 +106,35 @@ void drawCylinder(float radius, float height) {
 void CALLBACK display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-    gluLookAt(0.0, 200.0, 400.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);  // Configurarea camerei
+    gluLookAt(0.0, 200.0, 400.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
-    // Aplicați rotațiile pentru întreaga rachetă
     glPushMatrix();
     glRotatef(rocketAngleX, 1, 0, 0);
     glRotatef(rocketAngleZ, 0, 0, 1);
 
-    // Desenăm corpul rachetei (cilindru) cu rotația în jurul propriei axe
+   
     glPushMatrix();
-    glColor3f(0.8, 0.0, 0.0); // culoarea rosu
-    glRotatef(bodyAngleY, 0, 1, 0); // rotația corpului în jurul axei Y
+    glColor3f(0.8, 0.0, 0.0); 
+    glRotatef(bodyAngleY, 0, 1, 0); 
     glTranslatef(0.0, -50.0, 0.0);
-    glScalef(1.7, 5.0, 1.7); // ajustare dimensiuni pentru corp
-    glRotatef(-90, 1, 0, 0); // rotație pentru a orienta cilindrul vertical
-    drawCylinder(10.0, 20.0); // dimensiunile cilindru
+    glScalef(1.7, 5.0, 1.7);
+    glRotatef(-90, 1, 0, 0);
+    drawCylinder(10.0, 20.0); 
     glPopMatrix();
 
-    // Desenăm varful rachetei (con) lipit de corp
+
     glPushMatrix();
-    glColor3f(0.0, 0.0, 1.0); // culoarea alb
-    glTranslatef(0.0, 50.0, 0.0); // pozitionare in partea superioara a corpului
+    glColor3f(0.0, 0.0, 1.0); 
+    glTranslatef(0.0, 50.0, 0.0); 
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, textureId1);
-    glRotatef(-90, 1.0, 0.0, 0.0); // rotesc conul pentru a avea varful in sus
+    glRotatef(-90, 1.0, 0.0, 0.0);
     glutSolidCone(30.0, 60.0, 20, 20);
     glPopMatrix();
 
-    // Desenăm aripioarele rachetei folosind cuburi
-    glColor3f(0.0, 1.0, 0.0); // culoarea verde
+    
+
+    glColor3f(0.0, 1.0, 0.0);
 
     // Aripioara 1
     glPushMatrix();
@@ -171,7 +164,7 @@ void CALLBACK display() {
     glutSolidCube(20.0);
     glPopMatrix();
 
-    glPopMatrix(); // Termină transformările pentru întreaga rachetă
+    glPopMatrix();
 
     glFlush();
 }
